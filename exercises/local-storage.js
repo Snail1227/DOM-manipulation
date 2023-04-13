@@ -23,6 +23,7 @@
  * * Make all the items that are listed in the favorites LS save the red background color when the page is reloaded
  */
 
+
 /**
  * @hint
  * Here is a plan of how you can structure your code. You can follow it or choose your own way to go
@@ -37,4 +38,60 @@
  * * add the event listener to the container, pass the callback.
  */
 
-// Your code goes here...
+
+const container = document.querySelector('.cardsContainer');
+
+
+function setFavorites() {
+  const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  favorites.forEach((id) => {
+    const item = document.getElementById(id);
+    if (item) {
+      item.style.backgroundColor = 'red';
+      item.dataset.fav = 'true';
+    }
+  });
+}
+
+
+setFavorites();
+
+
+function addToFavorites(id) {
+  const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  if (!favorites.includes(id)) {
+    favorites.push(id);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }
+}
+
+
+function removeFromFavorites(id) {
+  const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+  const index = favorites.indexOf(id);
+  if (index !== -1) {
+    favorites.splice(index, 1);
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  }
+}
+
+
+function handleItemClick(event) {
+  const item = event.target.closest('.card');
+  if (!item) {
+    return;
+  }
+  const isFavorite = item.dataset.fav === 'true';
+  if (!isFavorite) {
+    item.style.backgroundColor = 'red';
+    item.dataset.fav = 'true';
+    addToFavorites(item.id);
+  } else {
+    item.style.backgroundColor = 'white';
+    item.dataset.fav = 'false';
+    removeFromFavorites(item.id);
+  }
+}
+
+
+container.addEventListener('click', handleItemClick);

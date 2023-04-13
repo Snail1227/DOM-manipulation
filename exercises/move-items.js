@@ -11,7 +11,8 @@
  * Example: const allItems = <Your code>;
  */
 
-// Your code goes here...
+const allItemElms = document.querySelectorAll('.item');
+
 
 
 
@@ -22,7 +23,8 @@
  * Example: const main = <Your code>
  * */
 
-// Your code goes here
+const main = document.getElementById('main');
+
 
 
 
@@ -33,8 +35,7 @@
  * Example: const favs = <Your code>;
  */
 
-// Your code goes here
-
+const favs = document.getElementById('favs');
 
 
 /**
@@ -46,8 +47,18 @@
  * Changes the icon of the element: fa-heart-circle-plus for main, fa-heart-crack for favs items.
  */
 
-// Your code goes here
 
+function updateCollections(id, direction) {
+    const item = document.getElementById(id);
+    const icon = item.querySelector('i');
+    if (direction === 'toMain') {
+        icon.classList.replace ('fa-heart-crack', 'fa-heart-circle-plus');
+        main.appendChild(item);
+    } else if (direction === 'toFavs') {
+        icon.classList.replace ('fa-heart-circle-plus', 'fa-heart-crack');
+        favs.appendChild(item);
+    }
+}
 
 
 /**
@@ -64,6 +75,13 @@
  * * Make the updateCollections function call, assign the item Id and the direction defined above
  */
 
-// Your code goes here...
+allItemElms.forEach(item => {
+    item.addEventListener('click', () => {
+        const parentId = item.parentNode.id;
+        const itemId = Number(item.id);
+        const direction = parentId === 'main' ? 'toFavs' : 'toMain';
+        updateCollections(itemId, direction);
+    });
+});
 
 
